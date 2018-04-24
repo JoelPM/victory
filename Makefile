@@ -30,6 +30,7 @@ deps/: mix.exs mix.lock
 # since there's no way (that I know of) to examine some binary
 # to determine if a rebuild is needed.
 build: deps/ lib/ test/
+	MIX_ENV=${MIX_ENV} mix format
 	MIX_ENV=${MIX_ENV} mix compile -q
 
 # Starts the interactive shell
