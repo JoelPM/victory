@@ -1,6 +1,6 @@
 pipeline {
     agent {
-        label "jenkins-go"
+        label "jenkins-elixir"
     }
     environment {
       ORG               = 'JoelPM'
@@ -22,7 +22,7 @@ pipeline {
           dir ('/home/jenkins/go/src/github.com/JoelPM/victory') {
             checkout scm
             container('go') {
-              sh "make linux"
+              sh "make release"
               sh 'export VERSION=$PREVIEW_VERSION && skaffold run -f skaffold.yaml'
             }
           }
