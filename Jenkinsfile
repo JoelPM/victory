@@ -1,6 +1,6 @@
 pipeline {
     agent {
-        label "jenkins-elixir"
+        label "jenkins-go"
     }
     environment {
       ORG               = 'JoelPM'
