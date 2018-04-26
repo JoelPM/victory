@@ -1,6 +1,6 @@
 pipeline {
     agent {
-        label "jenkins-go"
+        label "jenkins-jx-base"
     }
     environment {
       ORG               = 'JoelPM'
@@ -21,7 +21,7 @@ pipeline {
         steps {
           dir ('/home/jenkins/go/src/github.com/JoelPM/victory') {
             checkout scm
-            container('go') {
+            container('jx-base') {
               sh "make release"
               sh 'export VERSION=$PREVIEW_VERSION && skaffold run -f skaffold.yaml'
             }
@@ -39,7 +39,7 @@ pipeline {
           branch 'master'
         }
         steps {
-          container('go') {
+          container('jx-base') {
             dir ('/home/jenkins/go/src/github.com/JoelPM/victory') {
               checkout scm
               // so we can retrieve the version in later steps
@@ -70,7 +70,7 @@ pipeline {
         }
         steps {
           dir ('/home/jenkins/go/src/github.com/JoelPM/victory/charts/victory') {
-            container('go') {
+            container('jx-base') {
               sh 'jx step changelog --version v\$(cat ../../VERSION)'
 
               // release the helm chart
