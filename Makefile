@@ -42,7 +42,7 @@ release: clean build
 	MIX_ENV=${MIX_ENV} mix release
 
 container: 
-	docker -v
+	docker version
 	docker build --build-arg APP_NAME=$(APP_NAME) -t $(CONTAINER) .
 
 container.run: 
