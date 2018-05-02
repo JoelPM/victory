@@ -14,3 +14,8 @@ build:
 deploy:
   kubectl:
     manifests:
+profiles:
+  - name: gcb
+    build:
+      googleCloudBuild:
+        projectId: ox-dev-joel
