@@ -1,6 +1,8 @@
 apiVersion: skaffold/v1alpha2
 kind: Config
 build:
+  googleCloudBuild:
+    projectId: ox-dev-joel
   tagPolicy:
     envTemplate:
       template: "{{.JENKINS_X_DOCKER_REGISTRY_SERVICE_HOST}}:{{.JENKINS_X_DOCKER_REGISTRY_SERVICE_PORT}}/{{.ORG}}/{{.APP_NAME}}:{{.VERSION}}"
