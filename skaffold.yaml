@@ -5,9 +5,11 @@ build:
     envTemplate:
       template: "{{.JENKINS_X_DOCKER_REGISTRY_SERVICE_HOST}}:{{.JENKINS_X_DOCKER_REGISTRY_SERVICE_PORT}}/{{.ORG}}/{{.APP_NAME}}:{{.VERSION}}"
   artifacts:
-  - imageName: changeme
+  - imageName: victory
     workspace: .
-    docker: {}
+    docker:
+      buildArgs:
+        APP_NAME: victory
   local: {}
 deploy:
   kubectl:
