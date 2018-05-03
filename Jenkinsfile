@@ -22,7 +22,7 @@ pipeline {
           dir ('/home/jenkins/go/src/github.com/JoelPM/victory') {
             checkout scm
             container('jx-base') {
-              sh "make container"
+              #sh "make container"
               sh 'export VERSION=$PREVIEW_VERSION && skaffold -p gcb run -f skaffold.yaml'
             }
           }
