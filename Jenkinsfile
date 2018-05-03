@@ -23,7 +23,7 @@ pipeline {
             checkout scm
             container('jx-base') {
               sh "make container"
-              sh 'export VERSION=$PREVIEW_VERSION && skaffold run -f skaffold.yaml'
+              sh 'export VERSION=$PREVIEW_VERSION && skaffold -p gcb run -f skaffold.yaml'
             }
           }
           dir ('/home/jenkins/go/src/github.com/JoelPM/victory/charts/preview') {
