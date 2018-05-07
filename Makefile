@@ -41,10 +41,11 @@ release: clean build
 	MIX_ENV=${MIX_ENV} mix release
 
 container: 
-	skaffold -p gcb run -f skaffold.yaml -t $(VERSION)
+	echo "Container version is ${VERSION}"
+	skaffold -v debug -p gcb run -f skaffold.yaml -t ${VERSION}
 
 dev_container: 
-	skaffold run -f skaffold.yaml -t $(VERSION)
+	skaffold run -f skaffold.yaml -t ${VERSION}
 
 clean:
 	mix clean
