@@ -1,9 +1,6 @@
 apiVersion: skaffold/v1alpha2
 kind: Config
 build:
-  tagPolicy:
-    envTemplate:
-      template: "{{.APP_NAME}}:{{.VERSION}}"
   artifacts:
   - imageName: gcr.io/ox-dev-joel/victory
     workspace: .

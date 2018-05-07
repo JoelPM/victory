@@ -37,15 +37,14 @@ build: deps/ lib/ test/
 interactive: build
 	MIX_ENV=${MIX_ENV} iex -S mix
 
-
 release: clean build
 	MIX_ENV=${MIX_ENV} mix release
 
 container: 
-	APP_NAME=$(APP_NAME) VERSION=$(VERSION) skaffold -p gcb run -f skaffold.yaml
+	skaffold -p gcb run -f skaffold.yaml -t $(VERSION)
 
 dev_container: 
-	APP_NAME=$(APP_NAME) VERSION=$(VERSION) skaffold run -f skaffold.yaml
+	skaffold run -f skaffold.yaml -t $(VERSION)
 
 clean:
 	mix clean
