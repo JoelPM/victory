@@ -11,7 +11,7 @@ MIX_ENV ?= dev
 ELIXIR_VERSION ?= 1.6.4-alpine
 APP_VERSION ?= $(shell cat VERSION)
 SRC_VERSION := $(shell git describe --tags --always --dirty)
-VERSION = $(APP_VERSION)-$(SRC_VERSION)
+VERSION ?= $(APP_VERSION)-$(SRC_VERSION)
 
 .PHONY: build release clean shell
 
@@ -42,7 +42,7 @@ release: clean build
 	MIX_ENV=${MIX_ENV} mix release
 
 container: 
-	APP_NAME=$(APP_NAME) VERSION=$(VERSION) skaffold run -f skaffold.yaml
+	APP_NAME=$(APP_NAME) VERSION=$(VERSION) skaffold -p gcb run -f skaffold.yaml
 
 dev_container: 
 	APP_NAME=$(APP_NAME) VERSION=$(VERSION) skaffold run -f skaffold.yaml

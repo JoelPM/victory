@@ -19,7 +19,7 @@ pipeline {
           HELM_RELEASE = "$PREVIEW_NAMESPACE".toLowerCase()
         }
         steps {
-          dir ('/home/jenkins/go/src/github.com/JoelPM/victory') {
+          dir ('/home/jenkins/elixir/src/github.com/JoelPM/victory') {
             checkout scm
             container('jx-base') {
               sh 'export VERSION=$PREVIEW_VERSION && skaffold -p gcb run -f skaffold.yaml'
