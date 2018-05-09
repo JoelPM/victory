@@ -46,6 +46,7 @@ release: clean build
 	MIX_ENV=${MIX_ENV} mix release
 
 container: 
+	echo "Docker Reg Host: $(JENKINS_X_DOCKER_REGISTRY_SERVICE_HOST)"
 	echo "Container tag is ${TAG}"
 	skaffold -v debug -p gcb run -f skaffold.yaml -t ${TAG}
 
