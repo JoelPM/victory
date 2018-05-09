@@ -13,7 +13,7 @@ APP_VERSION ?= $(shell cat VERSION)
 SRC_VERSION := $(shell git describe --tags --always --dirty)
 VERSION ?= $(APP_VERSION)-$(SRC_VERSION)
 
-ifdef $(JENKINS_X_DOCKER_REGISTRY_SERVICE_HOST)
+ifdef JENKINS_X_DOCKER_REGISTRY_SERVICE_HOST
 TAG := $(JENKINS_X_DOCKER_REGISTRY_SERVICE_HOST):$(JENKINS_X_DOCKER_REGISTRY_SERVICE_PORT)/$(APP_NAME):$(VERSION)
 else
 TAG := $(APP_NAME):$(VERSION)
@@ -47,11 +47,6 @@ release: clean build
 	MIX_ENV=${MIX_ENV} mix release
 
 container: 
-ifdef JENKINS_X_DOCKER_REGISTRY_SERVICE_HOST
-  TAG := $(JENKINS_X_DOCKER_REGISTRY_SERVICE_HOST):$(JENKINS_X_DOCKER_REGISTRY_SERVICE_PORT)/$(APP_NAME):$(VERSION)
-else
-  TAG := $(APP_NAME):$(VERSION)
-endif
 	echo "Docker Reg Host: $(JENKINS_X_DOCKER_REGISTRY_SERVICE_HOST)"
 	echo "Container tag is ${TAG}"
 	skaffold -v debug -p gcb run -f skaffold.yaml -t ${TAG}
