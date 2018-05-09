@@ -13,6 +13,11 @@ APP_VERSION ?= $(shell cat VERSION)
 SRC_VERSION := $(shell git describe --tags --always --dirty)
 VERSION ?= $(APP_VERSION)-$(SRC_VERSION)
 
+TAG := $(APP_NAME):$(VERSION)
+ifdef $(JENKINS_X_DOCKER_REGISTRY_SERVICE_HOST)
+TAG := $(JENKINS_X_DOCKER_REGISTRY_SERVICE_HOST):$(JENKINS_X_DOCKER_REGISTRY_SERVICE_PORT)/$(TAG)
+endif
+
 .PHONY: build release clean shell
 
 # By default we compile the project. This could coneivably be changed
@@ -41,8 +46,8 @@ release: clean build
 	MIX_ENV=${MIX_ENV} mix release
 
 container: 
-	echo "Container version is ${VERSION}"
-	skaffold -v debug -p gcb run -f skaffold.yaml -t ${VERSION}
+	echo "Container tag is ${TAG}"
+	skaffold -v debug -p gcb run -f skaffold.yaml -t ${TAG}
 
 dev_container: 
 	skaffold run -f skaffold.yaml -t ${VERSION}
