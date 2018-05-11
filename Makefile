@@ -13,10 +13,9 @@ APP_VERSION ?= $(shell cat VERSION)
 SRC_VERSION := $(shell git describe --tags --always --dirty)
 VERSION ?= $(APP_VERSION)-$(SRC_VERSION)
 
+IMAGE := $(APP_NAME):$(VERSION)
 ifdef JENKINS_X_DOCKER_REGISTRY_SERVICE_HOST
-TAG := $(JENKINS_X_DOCKER_REGISTRY_SERVICE_HOST):$(JENKINS_X_DOCKER_REGISTRY_SERVICE_PORT)/$(APP_NAME):$(VERSION)
-else
-TAG := $(APP_NAME):$(VERSION)
+IMAGE := $(JENKINS_X_DOCKER_REGISTRY_SERVICE_HOST):$(JENKINS_X_DOCKER_REGISTRY_SERVICE_PORT)/$(IMAGE)
 endif
 
 .PHONY: build release clean shell
@@ -47,12 +46,13 @@ release: clean build
 	MIX_ENV=${MIX_ENV} mix release
 
 container: 
-	echo "Docker Reg Host: $(JENKINS_X_DOCKER_REGISTRY_SERVICE_HOST)"
-	echo "Container tag is ${TAG}"
-	skaffold -v debug -p gcb run -f skaffold.yaml -t ${TAG}
+	sed -e "s/imageName:.*/imageName: $(IMAGE)/" skaffold.yaml > skaffold.yaml.out
+	echo "Building ${IMAGE}"
+	skaffold -v debug -p gcb run -f skaffold.yaml.out
 
 dev_container: 
-	skaffold run -f skaffold.yaml -t ${VERSION}
+	sed -e "s/imageName:.*/imageName: $(IMAGE)/" skaffold.yaml > skaffold.yaml.out
+	skaffold run -f skaffold.yaml.out 
 
 clean:
 	mix clean
