@@ -20,7 +20,8 @@ endif
 
 # Configure the docker image name, making sure to prepend the registry info
 # if it's in use.
-IMAGE := $(APP_NAME):$(VERSION)
+#IMAGE := $(APP_NAME):$(VERSION)
+IMAGE := $(APP_NAME)
 ifdef DOCKER_REGISTRY
 IMAGE := $(DOCKER_REGISTRY)/$(IMAGE)
 endif
@@ -55,11 +56,7 @@ release: clean build
 container: 
 	sed -e "s=imageName:.*=imageName: $(IMAGE)=" skaffold.yaml > skaffold.yaml.out
 	echo "Building ${IMAGE}"
-	skaffold -v debug -p gcb run -f skaffold.yaml.out
-
-dev_container: 
-	sed -e "s/imageName:.*/imageName: $(IMAGE)/" skaffold.yaml > skaffold.yaml.out
-	skaffold run -f skaffold.yaml.out 
+	skaffold -v debug -p gcb run -f skaffold.yaml.out -t $(VERSION)
 
 clean:
 	mix clean
