@@ -10,7 +10,7 @@ MIX_ENV ?= dev
 APP_VERSION ?= $(shell cat VERSION)
 SRC_VERSION := $(shell git describe --tags --always --dirty)
 VERSION ?= $(APP_VERSION)-$(SRC_VERSION)
-DOCKER_REGISTRY ?= us.gcr.io/ox-dev-joel/
+DOCKER_REGISTRY ?= us.gcr.io/ox-dev-joel
 
 # When we use the Jenkins X registry we need to get the IP and Port from
 # the k8s service environment variables.
