@@ -25,8 +25,8 @@ pipeline {
               sh 'export VERSION=$PREVIEW_VERSION && make container'
             }
           }
-          dir ('/home/jenkins/go/src/github.com/JoelPM/victory/charts/preview') {
-            container('go') {
+          dir ('/home/jenkins/elixir/src/github.com/JoelPM/victory/charts/preview') {
+            container('jx-base') {
               sh "make preview"
               sh "jx preview --app $APP_NAME --dir ../.."
             }
@@ -39,12 +39,12 @@ pipeline {
         }
         steps {
           container('jx-base') {
-            dir ('/home/jenkins/go/src/github.com/JoelPM/victory') {
+            dir ('/home/jenkins/elixir/src/github.com/JoelPM/victory') {
               checkout scm
               // so we can retrieve the version in later steps
               sh "echo \$(jx-release-version) > VERSION"
             }
-            dir ('/home/jenkins/go/src/github.com/JoelPM/victory/charts/victory') {
+            dir ('/home/jenkins/elixir/src/github.com/JoelPM/victory/charts/victory') {
                 // ensure we're not on a detached head
                 sh "git checkout master"
                 // until we switch to the new kubernetes / jenkins credential implementation use git credentials store
@@ -54,8 +54,8 @@ pipeline {
 
                 sh "make tag"
             }
-            dir ('/home/jenkins/go/src/github.com/JoelPM/victory') {
-              container('go') {
+            dir ('/home/jenkins/elixir/src/github.com/JoelPM/victory') {
+              container('jx-base') {
                 sh "make build"
                 sh 'export VERSION=`cat VERSION` && skaffold run -f skaffold.yaml'
               }
@@ -68,7 +68,7 @@ pipeline {
           branch 'master'
         }
         steps {
-          dir ('/home/jenkins/go/src/github.com/JoelPM/victory/charts/victory') {
+          dir ('/home/jenkins/elixir/src/github.com/JoelPM/victory/charts/victory') {
             container('jx-base') {
               sh 'jx step changelog --version v\$(cat ../../VERSION)'
 

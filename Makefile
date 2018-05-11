@@ -6,16 +6,23 @@
 # that docker and the elixir tools are available.
 #
 APP_NAME ?= victory
-APP_PORT ?= 4000
 MIX_ENV ?= dev
-ELIXIR_VERSION ?= 1.6.4-alpine
 APP_VERSION ?= $(shell cat VERSION)
 SRC_VERSION := $(shell git describe --tags --always --dirty)
 VERSION ?= $(APP_VERSION)-$(SRC_VERSION)
+DOCKER_REGISTRY ?= us.gcr.io/ox-dev-joel/
 
+# When we use the Jenkins X registry we need to get the IP and Port from
+# the k8s service environment variables.
+ifeq ($(DOCKER_REGISTRY),jenkinsx)
+DOCKER_REGISTRY := $(JENKINS_X_DOCKER_REGISTRY_SERVICE_HOST):$(JENKINS_X_DOCKER_REGISTRY_SERVICE_PORT)
+endif
+
+# Configure the docker image name, making sure to prepend the registry info
+# if it's in use.
 IMAGE := $(APP_NAME):$(VERSION)
-ifdef JENKINS_X_DOCKER_REGISTRY_SERVICE_HOST
-IMAGE := $(JENKINS_X_DOCKER_REGISTRY_SERVICE_HOST):$(JENKINS_X_DOCKER_REGISTRY_SERVICE_PORT)/$(IMAGE)
+ifdef DOCKER_REGISTRY
+IMAGE := $(DOCKER_REGISTRY)/$(IMAGE)
 endif
 
 .PHONY: build release clean shell
