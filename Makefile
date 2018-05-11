@@ -46,7 +46,7 @@ release: clean build
 	MIX_ENV=${MIX_ENV} mix release
 
 container: 
-	sed -e "s/imageName:.*/imageName: $(IMAGE)/" skaffold.yaml > skaffold.yaml.out
+	sed -e "s=imageName:.*=imageName: $(IMAGE)=" skaffold.yaml > skaffold.yaml.out
 	echo "Building ${IMAGE}"
 	skaffold -v debug -p gcb run -f skaffold.yaml.out
 
