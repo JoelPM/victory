@@ -10,6 +10,7 @@ build:
   kaniko:
     gcsBucket: ox-dev-joel-victory-kaniko
     pullSecretName: kaniko-secret
+    namespace: jx
 deploy:
   kubectl:
     manifests:
