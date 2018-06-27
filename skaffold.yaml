@@ -8,7 +8,7 @@ build:
       buildArgs:
         APP_NAME: victory
   kaniko:
-    gcsBucket: ox-dev-joel-victory-kaniko
+    gcsBucket: ox-dev-joel-kaniko
     pullSecretName: kaniko-secret
     namespace: jx
 deploy:
