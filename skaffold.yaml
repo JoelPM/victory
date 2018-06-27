@@ -2,12 +2,14 @@ apiVersion: skaffold/v1alpha2
 kind: Config
 build:
   artifacts:
-  - imageName: victory
+  - imageName: gcr.io/ox-dev-joel/victory
     workspace: .
     docker:
       buildArgs:
         APP_NAME: victory
-  local: {}
+  kaniko:
+    gcsBucket: ox-dev-joel-victory-kaniko
+    pullSecretName: kaniko-secret
 deploy:
   kubectl:
     manifests:
