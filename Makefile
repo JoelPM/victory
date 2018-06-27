@@ -63,6 +63,7 @@ container:
 	sed -e "s=imageName:.*=imageName: $(IMAGE)=" skaffold.yaml > skaffold.yaml.out
 	echo "Building ${IMAGE}"
 	#skaffold -v debug -p gcb run -f skaffold.yaml.out -t $(VERSION)
+	skaffold version
 	skaffold -v debug build -f skaffold.yaml.out -t $(VERSION)
 
 clean:
