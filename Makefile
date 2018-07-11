@@ -64,8 +64,8 @@ container:
 	echo "Building ${IMAGE}"
 	#skaffold -v debug -p gcb run -f skaffold.yaml.out -t $(VERSION)
 	skaffold version
-	#skaffold -v debug build -f skaffold.yaml.out -t $(VERSION)
-	kubectl create -f kaniko.yaml
+	skaffold -v debug build -f skaffold.yaml.out -t $(VERSION)
+	#kubectl create -f kaniko.yaml
 
 clean:
 	mix clean
