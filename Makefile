@@ -34,7 +34,7 @@ echo "IMAGE = $(IMAGE)"
 
 .PHONY: build release clean shell
 
-print-%  : ; @echo $* = $($*)
+#print-%  : ; @echo $* = $($*)
 
 # By default we compile the project. This could coneivably be changed
 # to devshell.
@@ -61,9 +61,10 @@ interactive: build
 release: clean build
 	MIX_ENV=${MIX_ENV} mix release
 
-container: print-DOCKER_REGISTRY print-IMAGE
-	sed -e "s=imageName:.*=imageName: $(IMAGE)=" skaffold.yaml > skaffold.yaml.out
+container: 
+    echo "DOCKER_REGISTRY = ${DOCKER_REGISTRY}"
 	echo "Building ${IMAGE}"
+	sed -e "s=imageName:.*=imageName: $(IMAGE)=" skaffold.yaml > skaffold.yaml.out
 	#skaffold -v debug -p gcb run -f skaffold.yaml.out -t $(VERSION)
 	skaffold version
 	skaffold -v debug build -f skaffold.yaml.out #-t $(VERSION)
