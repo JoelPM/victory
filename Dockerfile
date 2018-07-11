@@ -21,7 +21,9 @@ WORKDIR /build
 COPY . .
 
 # Install local hex and rebar3
-RUN mix local.hex --force
+RUN echo "hi there!"
+RUN which sh
+RUN "mix local.hex --force"
 RUN mix local.rebar --force
 
 # Build the release

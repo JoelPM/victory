@@ -21,14 +21,11 @@ endif
 # Configure the docker image name, making sure to prepend the registry info
 # if it's in use.
 IMAGE := $(APP_NAME):$(VERSION)
-#IMAGE := $(APP_NAME)
 ifdef DOCKER_REGISTRY
 IMAGE := $(DOCKER_REGISTRY)/$(IMAGE)
 endif
 
 .PHONY: build release clean shell
-
-#print-%  : ; @echo $* = $($*)
 
 # By default we compile the project. This could coneivably be changed
 # to devshell.
