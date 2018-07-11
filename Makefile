@@ -24,8 +24,8 @@ echo "DOCKER_REGISTRY = $(DOCKER_REGISTRY)"
 
 # Configure the docker image name, making sure to prepend the registry info
 # if it's in use.
-#IMAGE := $(APP_NAME):$(VERSION)
-IMAGE := $(APP_NAME)
+IMAGE := $(APP_NAME):$(VERSION)
+#IMAGE := $(APP_NAME)
 ifdef DOCKER_REGISTRY
 IMAGE := $(DOCKER_REGISTRY)/$(IMAGE)
 endif
@@ -33,6 +33,8 @@ endif
 echo "IMAGE = $(IMAGE)"
 
 .PHONY: build release clean shell
+
+print-%  : ; @echo $* = $($*)
 
 # By default we compile the project. This could coneivably be changed
 # to devshell.
@@ -59,12 +61,12 @@ interactive: build
 release: clean build
 	MIX_ENV=${MIX_ENV} mix release
 
-container: 
+container: print-DOCKER_REGISTRY print-IMAGE
 	sed -e "s=imageName:.*=imageName: $(IMAGE)=" skaffold.yaml > skaffold.yaml.out
 	echo "Building ${IMAGE}"
 	#skaffold -v debug -p gcb run -f skaffold.yaml.out -t $(VERSION)
 	skaffold version
-	skaffold -v debug build -f skaffold.yaml.out -t $(VERSION)
+	skaffold -v debug build -f skaffold.yaml.out #-t $(VERSION)
 	#kubectl create -f kaniko.yaml
 
 clean:
