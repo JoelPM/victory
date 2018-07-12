@@ -1,7 +1,7 @@
 #===================
 # Build Stage
 #===================
-FROM elixir:1.6.4-alpine as builder
+FROM elixir:1.6.6-alpine as builder
 
 # Get the application name from a build_arg and set it in the ENV
 ARG APP_NAME
@@ -9,6 +9,9 @@ ENV APP_NAME ${APP_NAME}
 
 # Building a container means targeting prod
 ENV MIX_ENV=prod
+
+# Erlang requires this, docker sets it by default, but kaniko doesn't
+ENV HOME=/root
 
 # Install make so we can execute the make targets
 RUN apk update
@@ -21,9 +24,7 @@ WORKDIR /build
 COPY . .
 
 # Install local hex and rebar3
-RUN echo "hi there!"
-RUN which sh
-RUN "mix local.hex --force"
+RUN mix local.hex --force
 RUN mix local.rebar --force
 
 # Build the release
@@ -39,7 +40,7 @@ RUN RELEASE_DIR=`ls -d _build/prod/rel/$APP_NAME/releases/*/` && \
 #===================
 # Deployment Stage
 #===================
-FROM alpine:3.7
+FROM alpine:3.8
 
 # Elixir needs bash and openssl
 RUN apk update && apk add bash openssl

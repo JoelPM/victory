@@ -56,11 +56,12 @@ container:
 	echo "DOCKER_REGISTRY = ${DOCKER_REGISTRY}"
 	echo "Building ${IMAGE}"
 	sed -e "s=imageName:.*=imageName: $(IMAGE)=" skaffold.yaml > skaffold.yaml.out
-	#skaffold -v debug -p gcb run -f skaffold.yaml.out -t $(VERSION)
 	skaffold version
 	skaffold -v debug build -f skaffold.yaml.out 
-	#skaffold -v debug build -f skaffold.yaml.out -t $(VERSION)
 	#kubectl create -f kaniko.yaml
+
+kanikodbg:
+	docker run -v `pwd`:/root/build -w /root/build -it --entrypoint=/busybox/sh gcr.io/kaniko-project/executor:debug
 
 clean:
 	mix clean
